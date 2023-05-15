@@ -4,20 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Ball.h"
-#include "BallsGenerator.generated.h"
+#include "TriggerCar.generated.h"
 
 UCLASS()
-class TWOBETTERTHANONE_API ABallsGenerator : public AActor
+class TWOBETTERTHANONE_API ATriggerCar : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABallsGenerator();
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ABall> BallClass;
+	ATriggerCar();
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,23 +23,18 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
 protected:
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Movement")
-	FVector DestinationLocation;
-
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Movement");
+	FVector FinalLocation;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float Speed;
-
-	UFUNCTION(BlueprintCallable)
-	void SpawnBall();
-
-	UFUNCTION(BlueprintCallable)
-	void StartMovement();
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	bool IsGoingRight;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mechanics")
+	AActor* Target;
 
 private:
-	bool IsMoving;
-	float SpawnDistance;
+	FVector InitialLocation;
 	FVector CurrentLocation;
+
 };

@@ -82,8 +82,12 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void NotifyInteraction();
 
+	UFUNCTION(BlueprintCallable)
+	void RestartLocation();
+
 private:
 	float InteractionCooldown;
 	float InteractionCooldownRemaining;
+	FVector CheckpointLocation;
 };
 

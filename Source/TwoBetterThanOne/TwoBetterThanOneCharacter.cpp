@@ -68,6 +68,8 @@ void ATwoBetterThanOneCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	CheckpointLocation = GetActorLocation();
 }
 
 void ATwoBetterThanOneCharacter::Tick(float DeltaTime)
@@ -157,6 +159,11 @@ void ATwoBetterThanOneCharacter::Interact()
 void ATwoBetterThanOneCharacter::ChangeCanInteract()
 {
 	CanInteract = !CanInteract;
+}
+
+void ATwoBetterThanOneCharacter::RestartLocation()
+{
+	SetActorLocation(CheckpointLocation);
 }
 
 
