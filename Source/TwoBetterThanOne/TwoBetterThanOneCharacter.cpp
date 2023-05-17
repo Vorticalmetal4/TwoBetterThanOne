@@ -9,13 +9,18 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 
 //////////////////////////////////////////////////////////////////////////
 // ATwoBetterThanOneCharacter
 
 ATwoBetterThanOneCharacter::ATwoBetterThanOneCharacter()
-	:CanInteract(false)
+	:CanInteract(false),
+	ObjectToTakeDetected(false),
+	AbleToTakeObject(true),
+	GrabbedObjectDistance(90.f),
+	ArmReach(150.f)
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -83,6 +88,15 @@ void ATwoBetterThanOneCharacter::Tick(float DeltaTime)
 			InteractionButtonPressed = false;
 	}
 
+
+
+	if (AbleToTakeObject)
+		LookForObject();
+	else
+	{
+		GrabbedObjectLocation = GetActorLocation() + GetActorForwardVector() * GrabbedObjectDistance;
+		MoveGrabbedObject();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -99,6 +113,9 @@ void ATwoBetterThanOneCharacter::SetupPlayerInputComponent(class UInputComponent
 
 		//Interacting
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATwoBetterThanOneCharacter::Interact);
+
+		//MoveObject
+		EnhancedInputComponent->BindAction(MoveObjectAction, ETriggerEvent::Started, this, &ATwoBetterThanOneCharacter::TakeObject);
 
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATwoBetterThanOneCharacter::Move);
@@ -166,4 +183,43 @@ void ATwoBetterThanOneCharacter::RestartLocation()
 	SetActorLocation(CheckpointLocation);
 }
 
+void ATwoBetterThanOneCharacter::LookForObject()
+{
 
+	RaycastStart = GetActorLocation() + GetActorForwardVector() * 40;
+	RaycastEnd = RaycastStart + GetActorForwardVector() * ArmReach;
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, RaycastStart, RaycastEnd, ECollisionChannel::ECC_GameTraceChannel1))
+	{
+		//DrawDebugPoint(GetWorld(), RaycastStart, 10, FColor::Blue, true);
+		//DrawDebugPoint(GetWorld(), RaycastEnd, 10, FColor::Purple, true);
+		//DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor::Orange, true);
+
+		if (HitResult.GetActor())
+		{
+			ObjectToTakeDetected = true;
+			ActorHited = HitResult.GetActor();
+		}
+		else
+			ObjectToTakeDetected = false;
+		
+	}
+
+
+}
+
+void ATwoBetterThanOneCharacter::TakeObject()
+{
+	if (ObjectToTakeDetected && AbleToTakeObject)
+	{
+		AbleToTakeObject = false;
+		BP_TakeObject();
+	}
+	else if(!AbleToTakeObject)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, TEXT("Releasing Object"));
+		GrabbedObjectLocation = { 0.f, 0.f, 0.f };
+		AbleToTakeObject = true;
+		ObjectToTakeDetected = false;
+		ReleaseObject();
+	}
+}

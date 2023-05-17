@@ -36,6 +36,9 @@ class ATwoBetterThanOneCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* InteractAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* MoveObjectAction;
+
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
@@ -76,6 +79,18 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	bool InteractionButtonPressed;
 
+	UPROPERTY(BlueprintReadWrite)
+	bool ObjectToTakeDetected;
+
+	UPROPERTY(BlueprintReadOnly)
+	AActor* ActorHited;
+
+	UPROPERTY(BlueprintReadOnly)
+	FHitResult HitResult;
+
+	UPROPERTY(BlueprintReadOnly)
+	FVector GrabbedObjectLocation;
+
 	UFUNCTION(BlueprintCallable)
 	void ChangeCanInteract();
 
@@ -85,9 +100,28 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void RestartLocation();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_TakeObject();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void MoveGrabbedObject();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ReleaseObject();
+
 private:
 	float InteractionCooldown;
 	float InteractionCooldownRemaining;
+	float ArmReach;
+	float GrabbedObjectDistance;
+
+	bool AbleToTakeObject;
+
 	FVector CheckpointLocation;
+	FVector RaycastStart;
+	FVector RaycastEnd;
+	
+	void LookForObject();
+	void TakeObject();
 };
 
