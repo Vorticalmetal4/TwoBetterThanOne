@@ -88,8 +88,6 @@ void ATwoBetterThanOneCharacter::Tick(float DeltaTime)
 			InteractionButtonPressed = false;
 	}
 
-
-
 	if (AbleToTakeObject)
 		LookForObject();
 	else
