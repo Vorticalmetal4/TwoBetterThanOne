@@ -24,17 +24,18 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Movement");
+	UPROPERTY(EditAnywhere, Category = "Movement", Meta = (MakeEditWidget = true));
 	FVector FinalLocation;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float Speed;
-	UPROPERTY(EditAnywhere, Category = "Movement")
-	bool IsGoingRight;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mechanics")
 	AActor* Target;
 
 private:
 	FVector InitialLocation;
+	FVector Direction;
 	FVector CurrentLocation;
+	FVector TargetLocation;
 
+	bool IsGoingToFinal;
 };

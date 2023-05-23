@@ -93,6 +93,7 @@ void ATwoBetterThanOneCharacter::Tick(float DeltaTime)
 	else
 	{
 		GrabbedObjectLocation = GetActorLocation() + GetActorForwardVector() * GrabbedObjectDistance;
+		GrabbedObjectLocation.Z = GetActorLocation().Z;
 		MoveGrabbedObject();
 	}
 }
@@ -201,8 +202,6 @@ void ATwoBetterThanOneCharacter::LookForObject()
 			ObjectToTakeDetected = false;
 		
 	}
-
-
 }
 
 void ATwoBetterThanOneCharacter::TakeObject()

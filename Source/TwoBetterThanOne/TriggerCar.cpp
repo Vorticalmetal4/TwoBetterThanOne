@@ -16,6 +16,7 @@ void ATriggerCar::BeginPlay()
 {
 	Super::BeginPlay();
 	InitialLocation = GetActorLocation();
+	TargetLocation = FinalLocation;
 }
 
 // Called every frame
@@ -23,14 +24,18 @@ void ATriggerCar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	CurrentLocation = GetActorLocation();
-	CurrentLocation.X += Speed * DeltaTime;
-	SetActorLocation(CurrentLocation);
-
-	if ((IsGoingRight && CurrentLocation.X >= FinalLocation.X) || (!IsGoingRight && CurrentLocation.X <= InitialLocation.X))
+	if (HasAuthority())
 	{
-		IsGoingRight = !IsGoingRight;
-		Speed *= -1;
+		CurrentLocation = GetActorLocation();
+		Direction = (TargetLocation - CurrentLocation).GetSafeNormal();
+		CurrentLocation += Speed * DeltaTime * Direction;
+		SetActorLocation(CurrentLocation);
+
+		if ((CurrentLocation - TargetLocation).Size() <= 5)
+		{
+			IsGoingToFinal = !IsGoingToFinal;
+			TargetLocation = (IsGoingToFinal) ? InitialLocation : FinalLocation;
+		}
 	}
 }
 

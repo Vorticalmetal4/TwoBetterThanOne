@@ -36,12 +36,14 @@ void ABallsGenerator::Tick(float DeltaTime)
 
 void ABallsGenerator::SpawnBall()
 {
-	FActorSpawnParameters ActorSpawnParams;
-	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-	FVector SpawnLocation = GetActorLocation();
-	SpawnLocation.Z += SpawnDistance;
-
-	GetWorld()->SpawnActor<ABall>(BallClass, SpawnLocation, FRotator(0.0f, 0.0f, 0.0f), ActorSpawnParams);
+	if (HasAuthority())
+	{
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+		FVector SpawnLocation = GetActorLocation();
+		SpawnLocation.Z += SpawnDistance;
+		GetWorld()->SpawnActor<ABall>(BallClass, SpawnLocation, FRotator(0.0f, 0.0f, 0.0f), ActorSpawnParams);
+	}
 }
 
 void ABallsGenerator::StartMovement()
