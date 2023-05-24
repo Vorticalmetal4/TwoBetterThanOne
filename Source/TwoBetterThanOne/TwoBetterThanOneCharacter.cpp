@@ -208,6 +208,7 @@ void ATwoBetterThanOneCharacter::TakeObject()
 {
 	if (ObjectToTakeDetected && AbleToTakeObject)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Taking Object"));
 		AbleToTakeObject = false;
 		BP_TakeObject();
 	}
