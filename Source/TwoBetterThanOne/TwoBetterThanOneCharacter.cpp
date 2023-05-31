@@ -111,16 +111,16 @@ void ATwoBetterThanOneCharacter::SetupPlayerInputComponent(class UInputComponent
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		//Interacting
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATwoBetterThanOneCharacter::Interact);
+EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATwoBetterThanOneCharacter::Interact);
 
-		//MoveObject
-		EnhancedInputComponent->BindAction(MoveObjectAction, ETriggerEvent::Started, this, &ATwoBetterThanOneCharacter::TakeObject);
+//MoveObject
+EnhancedInputComponent->BindAction(MoveObjectAction, ETriggerEvent::Started, this, &ATwoBetterThanOneCharacter::TakeObject);
 
-		//Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATwoBetterThanOneCharacter::Move);
+//Moving
+EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATwoBetterThanOneCharacter::Move);
 
-		//Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATwoBetterThanOneCharacter::Look);
+//Looking
+EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATwoBetterThanOneCharacter::Look);
 
 	}
 
@@ -139,7 +139,7 @@ void ATwoBetterThanOneCharacter::Move(const FInputActionValue& Value)
 
 		// get forward vector
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	
+
 		// get right vector 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
@@ -200,7 +200,7 @@ void ATwoBetterThanOneCharacter::LookForObject()
 		}
 		else
 			ObjectToTakeDetected = false;
-		
+
 	}
 }
 
@@ -208,9 +208,15 @@ void ATwoBetterThanOneCharacter::TakeObject()
 {
 	if (ObjectToTakeDetected && AbleToTakeObject)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Taking Object"));
-		AbleToTakeObject = false;
-		BP_TakeObject();
+		if (ActorHited->ActorHasTag("Grabbable"))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Taking Object"));
+			AbleToTakeObject = false;
+			BP_TakeObject();
+		}
+		else
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("The object is not grabbable"));
+
 	}
 	else if(!AbleToTakeObject)
 	{
