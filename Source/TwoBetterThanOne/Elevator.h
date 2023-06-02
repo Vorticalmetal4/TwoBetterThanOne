@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "MobilePlatform.h"
-#include "TriggerCar.generated.h"
+#include "Elevator.generated.h"
 
 UCLASS()
-class TWOBETTERTHANONE_API ATriggerCar : public AMobilePlatform
+class TWOBETTERTHANONE_API AElevator : public AMobilePlatform
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ATriggerCar();
+	AElevator();
 
 protected:
 	// Called when the game starts or when spawned
@@ -23,12 +23,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
 protected:
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mechanics")
-	AActor* Target;
+	UFUNCTION(BlueprintCallable)
+	void TriggerActivated();
 
-	UPROPERTY(BlueprintReadWrite)
-	int ActorsInsideTrigger;
-	
-
+private:
+	void ChangeDirection();
 };
