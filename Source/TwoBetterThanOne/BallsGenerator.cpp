@@ -44,8 +44,7 @@ void ABallsGenerator::SpawnBall()
 		SpawnLocation.Z += SpawnDistance;
 		GetWorld()->SpawnActor<ABall>(BallClass, SpawnLocation, FRotator(0.0f, 0.0f, 0.0f), ActorSpawnParams);
 	}
-	else
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("I'm a client"));
+
 }
 
 void ABallsGenerator::StartMovement()

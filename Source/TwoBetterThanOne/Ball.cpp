@@ -4,7 +4,8 @@
 #include "Ball.h"
 
 // Sets default values
-ABall::ABall()
+ABall::ABall():
+	LifeTime(7)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;

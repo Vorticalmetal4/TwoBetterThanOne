@@ -206,7 +206,7 @@ void ATwoBetterThanOneCharacter::LookForObject()
 
 void ATwoBetterThanOneCharacter::TakeObject()
 {
-	if (ObjectToTakeDetected && AbleToTakeObject)
+	/*if (ObjectToTakeDetected && AbleToTakeObject)
 	{
 		if (ActorHited->ActorHasTag("Grabbable"))
 		{
@@ -225,5 +225,5 @@ void ATwoBetterThanOneCharacter::TakeObject()
 		AbleToTakeObject = true;
 		ObjectToTakeDetected = false;
 		ReleaseObject();
-	}
+	}*/
 }
